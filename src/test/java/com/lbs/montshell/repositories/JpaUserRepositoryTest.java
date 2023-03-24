@@ -5,10 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 public class JpaUserRepositoryTest {
 
     @Autowired
@@ -20,7 +22,6 @@ public class JpaUserRepositoryTest {
         // given
         User user = new User();
         user.setUsername("test_name");
-        user.setEmail("test_mail");
         user.setPassword("1234");
 
         // when
@@ -29,7 +30,6 @@ public class JpaUserRepositoryTest {
         // then
         assertThat(savedUser.getId()).isNotNull();
         assertThat(savedUser.getUsername()).isEqualTo(user.getUsername());
-        assertThat(savedUser.getEmail()).isEqualTo(user.getEmail());
         assertThat(savedUser.getPassword()).isEqualTo(user.getPassword());
     }
 }

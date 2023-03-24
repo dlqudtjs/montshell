@@ -14,8 +14,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // 사용자 id (Key)
     private Long id;
-    private String password;
+
+    // 사용자 아이디 (로그인 할 때 사용)
     private String username;
-    private String email;
+
+    // 사용자 패스워드
+    private String password;
 }

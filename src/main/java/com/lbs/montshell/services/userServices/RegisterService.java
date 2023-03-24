@@ -5,6 +5,4 @@ import com.lbs.montshell.models.User;
 public interface RegisterService {
 
     User join(User user);
-
-
 }

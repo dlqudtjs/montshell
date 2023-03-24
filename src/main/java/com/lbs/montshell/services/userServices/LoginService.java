@@ -6,5 +6,6 @@ public interface LoginService {
 
     User login(User user);
 
-
+    void checkUsername(String username);
+    void checkPassword(Long id, String password);
 }
