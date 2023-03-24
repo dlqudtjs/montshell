@@ -9,8 +9,6 @@ public interface UserService {
 
     Optional<List<User>> findByUsername(String username);
 
-    Optional<List<User>> findByEmail(String email);
-
     Optional<List<User>> findById(Long id);
 
     Optional<List<User>> findAll();

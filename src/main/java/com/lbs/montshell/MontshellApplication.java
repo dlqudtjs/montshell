@@ -9,5 +9,4 @@ public class MontshellApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MontshellApplication.class, args);
 	}
-
 }
