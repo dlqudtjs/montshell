@@ -25,7 +25,6 @@ public class RegisterPageController {
 
     /*
     POJO 클래스(UserForm)를 이용하여 해당 데이터를 직접 사용하지 않고 POJO 클래스를 통해 추출하기 때문에 보안상의 이유로 권장되는 방법이다.
-
      */
     @PostMapping("/registerProc")
     public String registerProc(UserForm userForm) {
