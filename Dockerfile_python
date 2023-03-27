@@ -1,9 +1,0 @@
-# 베이스 이미지를 선택합니다.
-FROM python:latest
-
-# 작성한 소스코드를 Docker 컨테이너 내부에 복사합니다.
-COPY . /usr/src/python-code
-
-# 컴파일 및 실행을 위한 명령어를 작성합니다.
-WORKDIR /usr/src/python-code
-CMD ["python", "main.py"]
