@@ -1,4 +1,12 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11
+
 WORKDIR /app
-COPY target/myapp.jar /app
-CMD ["java", "-jar", "/app/myapp.jar"]
+
+# Copy the source code into the container
+COPY . .
+
+# Compile the code
+RUN javac Main.java
+
+# Run the code
+CMD ["java", "Main"]

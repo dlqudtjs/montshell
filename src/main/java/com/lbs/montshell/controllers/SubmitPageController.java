@@ -22,7 +22,7 @@ public class SubmitPageController {
 
     @PostMapping("/submitProc")
     public String submitProc(SubmitForm submitForm) throws InterruptedException {
-        submitService.buildDockerImage(submitForm);
+        submitService.buildAndRunDockerContainer(submitForm);
 
         return "redirect:/";
     }
