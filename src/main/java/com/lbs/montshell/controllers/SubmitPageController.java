@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.IOException;
+
 @Controller
 public class SubmitPageController {
 
@@ -21,7 +23,7 @@ public class SubmitPageController {
     }
 
     @PostMapping("/submitProc")
-    public String submitProc(SubmitForm submitForm) throws InterruptedException {
+    public String submitProc(SubmitForm submitForm) throws IOException {
         submitService.buildAndRunDockerContainer(submitForm);
 
         return "redirect:/";

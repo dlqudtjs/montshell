@@ -1,12 +1,6 @@
-FROM openjdk:11
-
+FROM openjdk:11-jdk
+RUN mkdir /app
 WORKDIR /app
-
-# Copy the source code into the container
-COPY . .
-
-# Compile the code
-RUN javac Main.java
-
-# Run the code
-CMD ["java", "Main"]
+COPY . /app
+RUN if [ -f Main.java ]; then echo 'Main.java exists' && javac Main.java; else echo 'Main.java not found' && exit 1; fi
+CMD java Main
