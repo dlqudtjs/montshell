@@ -16,7 +16,7 @@ public class RegisterServiceImpl implements RegisterService{
         this.userRepository = userRepository;
     }
 
-    // 이상이 없다면 Repository 에 저장한다.
+    // Repository 에 사용자를 저장한다.
     @Override
     public User join(User user) {
         checkDuplicate(user);

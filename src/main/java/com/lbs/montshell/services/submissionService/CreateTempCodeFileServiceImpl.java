@@ -1,5 +1,6 @@
 package com.lbs.montshell.services.submissionService;
 
+import com.lbs.montshell.controllers.SubmitForm;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +17,36 @@ public class CreateTempCodeFileServiceImpl implements CreateTempCodeFileService 
     }
 
     @Override
-    public Path createTempCodeFile(String code, String language) throws IOException {
-        String codeFileName = getCodeFileName(language);
-        Path codeFilePath = TEMP_CODE_FILE_PATH.resolve(codeFileName);
-        Files.write(codeFilePath, code.getBytes());
+    public String createTempCodeFile(SubmitForm submitForm) throws IOException {
+        // code 파일 이름 생성 ex) java_1_1_
+        String tempFileName = createTempCodeFileName(submitForm);
 
-        return codeFilePath;
+        // tempFileName 과 language 에 따라 codeFileName 생성 ex) java_1_1_Main.java
+        String codeFileName = getCodeFileName(submitForm.getLanguage(), tempFileName);
+
+        // TEMP_CODE_FILE_PATH 에 codeFileName 이름을 붙인다.
+        Path codeFilePath = TEMP_CODE_FILE_PATH.resolve(codeFileName);
+
+        // codeFilePath 에 submitForm.getCode() 를 저장한다.
+        Files.write(codeFilePath, submitForm.getCode().getBytes());
+
+        // codeFileName 을 리턴한다.
+        return codeFileName;
     }
 
-    public String getCodeFileName(String language) {
+    public String createTempCodeFileName(SubmitForm submitForm) {
+        return submitForm.getLanguage() + "_" + submitForm.getProblem_id() + "_" + submitForm.getUser_id() + "_";
+    }
+
+    public String getCodeFileName(String language, String tempFileName) {
 
         switch (language.toLowerCase()) {
             case "java":
-                return "Main.java";
+                return tempFileName + "Main.java";
             case "python":
-                return "main.py";
+                return tempFileName + "Main.py";
             case "cpp":
-                return "main.cpp";
+                return tempFileName + "Main.cpp";
             default:
                 throw new IllegalArgumentException("Unsupported language: " + language);
         }

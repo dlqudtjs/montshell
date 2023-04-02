@@ -13,8 +13,8 @@ import java.nio.file.Path;
 
 @Configuration
 public class DockerConfig {
-    private final Path DOCKERFILE_PATH = Path.of("C:\\Users\\dlqud\\OneDrive\\바탕 화면\\학교 공유 파일\\3-1\\Start-Up Project\\montshell\\Dockerfile");
-    private final Path TEMP_CODE_FILE_PATH = Path.of("C:\\Users\\dlqud\\OneDrive\\바탕 화면\\학교 공유 파일\\3-1\\Start-Up Project\\montshell\\");
+    private final Path DOCKERFILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
+    private final Path TEMP_CODE_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
 
     @Bean(name = "dockerfilePath")
     public Path dockerfilePath() {
@@ -35,10 +35,10 @@ public class DockerConfig {
 
     @Bean
     public DockerHttpClient httpClient(DockerClientConfig config) {
-    return new ApacheDockerHttpClient.Builder()
-            .dockerHost(config.getDockerHost())
-            .sslConfig(config.getSSLConfig())
-            .build();
+        return new ApacheDockerHttpClient.Builder()
+                .dockerHost(config.getDockerHost())
+                .sslConfig(config.getSSLConfig())
+                .build();
     }
 
     @Bean
@@ -62,7 +62,7 @@ public class DockerConfig {
     }
 
     @Bean
-public RunDockerContainerService runDockerContainerService(DockerClient dockerClient) {
-        return new RunDockerContainerServiceImpl(dockerClient);
+    public RunDockerContainerService runDockerContainerService(DockerClient dockerClient) {
+        return new RunDockerContainerServiceImpl(dockerClient, DOCKERFILE_PATH);
     }
 }

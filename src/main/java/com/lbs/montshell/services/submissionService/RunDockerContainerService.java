@@ -5,5 +5,5 @@ import com.lbs.montshell.controllers.SubmitForm;
 import java.nio.file.Path;
 
 public interface RunDockerContainerService {
-    public void runDockerContainer(String dockerImageId, String dockerImageName, SubmitForm submitForm, Path tempCodePath);
+    public void runDockerContainer(String dockerImageId, String dockerImageName, SubmitForm submitForm, String codeFileName);
 }

@@ -83,3 +83,6 @@ gradle-app.setting
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+## 폴더 제외
+temp/
