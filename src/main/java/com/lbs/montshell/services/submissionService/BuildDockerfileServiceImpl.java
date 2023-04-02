@@ -21,7 +21,6 @@ public class BuildDockerfileServiceImpl implements BuildDockerfileService {
     @Override
     public String buildDockerfile(Path dockerfilePath, String imageName) {
         try {
-            System.out.println("dockerfilePath: " + dockerfilePath);
             // build docker image
             BuildImageCmd buildImageCmd = dockerClient.buildImageCmd()
                     // 도커 파일 경로를 설정
@@ -56,8 +55,9 @@ public class BuildDockerfileServiceImpl implements BuildDockerfileService {
                 }
             };
 
+            // 이미지 빌드를 실행
             buildImageCmd.exec(callback).awaitCompletion();
-            System.out.println("도커 이미지 빌드가 완료되었습니다. 이미지 ID: " + imageId);
+            System.out.println("imageID: " + imageId);
 
             return imageId.get();
         } catch (InterruptedException e) {
