@@ -3,7 +3,6 @@ package com.lbs.montshell.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -17,7 +16,6 @@ public class SecurityConfig {
         return http.csrf().disable()
                 // HTTP 요청에 대한 권한 부여 설정을 시작
                 .authorizeHttpRequests()
-                // '/user/**' 경로에 대한 요청은 인증된 사용자만 허용
                 .requestMatchers("/user/**").authenticated()
                 // '/admin/**' 경로에 대한 요청은 ROLE_ADMIN 권한을 가진 사용자만 허용
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -32,6 +30,13 @@ public class SecurityConfig {
                 .loginProcessingUrl("/loginProc")
                 // 로그인 성공 시 이동할 URL을 '/'으로 설정
                 .defaultSuccessUrl("/")
+                .and()
+                // 로그아웃 설정 추가
+                .logout()
+                // 로그아웃 요청 처리 URL 설정
+                .logoutUrl("/logout")
+                // 로그아웃 성공 시 이동할 URL을 '/'으로 설정
+                .logoutSuccessUrl("/")
                 // 객체를 빌드하고 반환
                 .and().build();
     }

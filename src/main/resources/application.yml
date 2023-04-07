@@ -1,12 +1,16 @@
 spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/test
+#    driver-class-name: org.h2.Driver
+#    username: sa
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    driver-class-name: org.h2.Driver
-    username: sa
-jpa:
-  show-sql: true
-  hibernate:
-  ddl-auto: none
-
-server:
-    port: 5000
+    url: jdbc:mysql://localhost:3306/montshell?useSSL=false
+    username: root
+    password: root
+  mvc:
+    content-negotiation:
+      favor-path-extension: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none

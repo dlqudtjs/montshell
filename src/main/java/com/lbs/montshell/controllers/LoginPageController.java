@@ -12,9 +12,4 @@ public class LoginPageController {
     public String loginPage() {
         return "loginPage";
     }
-
-//    @PostMapping("loginProc")
-//    public String loginProc(Model model) {
-//
-//    }
 }

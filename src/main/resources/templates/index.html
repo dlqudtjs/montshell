@@ -5,19 +5,20 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>코딩 웹사이트</title>
+    <div th:insert="common-css :: head"></div>
 </head>
 <body>
-    <h1>
-        <a href="registerPage"> 회원가입</a>
-        <a href="loginPage"> 로그인</a>
-        <a href="submitPage"> 코딩 테스트 제출 폼</a>
-    </h1>
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-        <p>보이십니까?</p>
-    </div>
-    <div th:if="${!#authorization.expression('isAuthenticated()')}">
-        <p>로그인을 하십쇼</p>
-    </div>
+<header>
+    <div th:insert="navBar :: nav"></div>
+</header>
 </body>
 </html>
+
+<!--
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <p>보이십니까?</p>
+</div>
+<div th:if="${!#authorization.expression('isAuthenticated()')}">
+    <p>로그인을 하십쇼</p>
+!-->
