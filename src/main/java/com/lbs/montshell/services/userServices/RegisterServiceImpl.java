@@ -2,7 +2,6 @@ package com.lbs.montshell.services.userServices;
 
 import com.lbs.montshell.models.User;
 import com.lbs.montshell.repositories.JpaUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

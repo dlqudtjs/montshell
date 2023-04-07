@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>문제</title>
+    <div th:insert="common-css :: head"></div>
+    <style>
+        .layout {
+            margin: 10% 10% 0% 10%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        th {
+            background-color: #000;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #eee;
+        }
+        tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination ul {
+            color: #7c8082;
+            text-decoration: none;
+        }
+
+        .pagination li {
+            display: inline-block;
+            padding: 0 10px;
+        }
+
+        .pagination a {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div th:insert="navBar :: nav"></div>
+</header>
+<div class="layout">
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>난이도</th>
+            <th>작성자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="problem : ${problemList}">
+            <td style="width:10%" th:text="${problem.id}"></td>
+            <td style="width:70%" th:text="${problem.title}"></td>
+            <td style="width:10%"th:text="${problem.difficulty}"></td>
+            <td style="width:10%"th:text="${problem.author}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="pagination">
+    <ul>
+        <li>
+            <a th:href="@{/problemList(page=${previous})}">이전</a>
+        </li>
+        <li th:each="page : ${#numbers.sequence(1, totalPage)}">
+            <a th:href="@{/problemList(page=${page - 1})}" th:text="${page}"></a>
+        </li>
+        <li>
+            <a th:href="@{/problemList(page=${next})}">다음</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

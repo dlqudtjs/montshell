@@ -19,3 +19,15 @@ CREATE TABLE `montshell`.`user` (
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`));
 
+CREATE TABLE `montshell`.`problem` (
+   `id` INT NOT NULL AUTO_INCREMENT,
+   `title` VARCHAR(45) NOT NULL,
+   `description` VARCHAR(1000) NOT NULL,
+   `input_description` VARCHAR(300) NOT NULL,
+   `output_description` VARCHAR(300) NOT NULL,
+   `difficulty` INT NOT NULL,
+   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY (`id`));
+
+insert into problem (title, author, description, input_description, output_description, difficulty) values ('test_title', 'test_author','test_description', 'test_input_description', 'test_output_description', 1);
