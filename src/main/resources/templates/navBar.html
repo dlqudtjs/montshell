@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div th:fragment="nav" class="nav">
+    <div class="top-bar">
+        <nav>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <ul>
+                    <li><a href="#" th:text="${#authentication.getName()}"></a></li>
+                    <li class="top-bar-divider"></li>
+                    <li class="logout hidden"><a href="/logout">로그아웃</a></li>
+                </ul>
+            </div>
+            <div th:if="${!#authorization.expression('isAuthenticated()')}">
+                <ul>
+                    <li><a href="/loginPage">로그인</a></li>
+                    <li class="top-bar-divider"></li>
+                    <li><a href="registerPage">회원가입</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="bottom-nav">
+        <nav>
+            <ul>
+                <li><a href="#">문제</a></li>
+                <li><a href="#">검색</a></li>
+                <li><a href="#">todo</a></li>
+                <li><a href="#">todo</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>
+
+<!--            -->
+<!--
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <p>보이십니까?</p>
+</div>
+<div th:if="${!#authorization.expression('isAuthenticated()')}">
+    <p>로그인을 하십쇼</p>
+!-->

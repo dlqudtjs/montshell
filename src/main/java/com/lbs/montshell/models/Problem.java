@@ -20,6 +20,8 @@ public class Problem {
     
     // 문제 출력 설명 (요구하는 출력)
     private String output_description;
+
+    private int difficulty;
     
     // 테스트 케이스 (여러개의 입력과 출력 쌍)
 //    private List<TestCase> test_case;
