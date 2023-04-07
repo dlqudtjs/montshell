@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'mysql:mysql-connector-java:8.0.26'
 	implementation group: 'com.github.docker-java', name: 'docker-java', version: '3.2.13'
 	implementation group: 'com.github.docker-java', name: 'docker-java-transport-httpclient5', version: '3.2.3'
 	implementation 'org.springframework.boot:spring-boot-starter-jersey'

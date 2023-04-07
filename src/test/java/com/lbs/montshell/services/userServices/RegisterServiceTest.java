@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -57,5 +59,14 @@ public class RegisterServiceTest {
 
         // then
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 아이디입니다.");
+    }
+
+    @Test
+    @DisplayName("데이터베이스 출력")
+    void printDatabase() {
+        List<User> all = jpaUserRepository.findAll();
+        for (User user : all) {
+            System.out.println("user = " + user.getUsername());
+        }
     }
 }
