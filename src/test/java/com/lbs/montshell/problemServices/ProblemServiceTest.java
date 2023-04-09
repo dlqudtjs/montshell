@@ -45,7 +45,7 @@ public class ProblemServiceTest {
         Long id = 1L;
 
         // when
-        Problem problem = problemService.findById(id)
+        Problem problem = problemService.getProblem(id)
                 .orElseThrow(() -> new NoSuchElementException("Problem not found with Id = " + id));
 
         // then

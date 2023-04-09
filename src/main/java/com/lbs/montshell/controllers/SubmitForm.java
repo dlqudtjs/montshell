@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class SubmitForm {
     // 제출한 문제의 id 값 (key)
-    private String problem_id;
+    private Long problem_id;
 
     // 답안을 제출한 사용자 id(key)
     private String user_id;

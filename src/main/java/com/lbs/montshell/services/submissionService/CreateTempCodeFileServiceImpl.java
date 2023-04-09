@@ -28,7 +28,8 @@ public class CreateTempCodeFileServiceImpl implements CreateTempCodeFileService 
         Path codeFilePath = TEMP_CODE_FILE_PATH.resolve(codeFileName);
 
         // codeFilePath 에 submitForm.getCode() 를 저장한다.
-        Files.write(codeFilePath, submitForm.getCode().getBytes());
+        String shebang = "#!/usr/bin/env python3\n" + submitForm.getCode();
+        Files.write(codeFilePath, shebang.getBytes());
 
         // codeFileName 을 리턴한다.
         return codeFileName;

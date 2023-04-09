@@ -8,6 +8,13 @@
         .layout {
             margin: 10% 10% 0% 10%;
         }
+
+        .layout a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -65,7 +72,7 @@
         <tbody>
         <tr th:each="problem : ${problemList}">
             <td style="width:10%" th:text="${problem.id}"></td>
-            <td style="width:70%" th:text="${problem.title}"></td>
+            <td style="width:70%"><a th:text="${problem.title}" th:href="@{/user/submit(problemId=${problem.id})}"></a></td>
             <td style="width:10%"th:text="${problem.difficulty}"></td>
             <td style="width:10%"th:text="${problem.author}"></td>
         </tr>
