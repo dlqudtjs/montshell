@@ -6,15 +6,18 @@ import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
+import com.lbs.montshell.repositories.JpaTestCaseRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.nio.file.Path;
 
 @Configuration
-public class DockerConfig {
+public class SubmissionConfig {
     private final Path DOCKERFILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
     private final Path TEMP_CODE_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
+    private final Path TEMP_INPUT_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
+    private final Path TEMP_OUTPUT_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
 
     @Bean(name = "dockerfilePath")
     public Path dockerfilePath() {
@@ -24,6 +27,16 @@ public class DockerConfig {
     @Bean(name = "tempCodeFilePath")
     public Path tempCodeFilePath() {
         return TEMP_CODE_FILE_PATH;
+    }
+
+    @Bean(name = "tempInputFilePath")
+    public Path tempInputFilePath() {
+        return TEMP_INPUT_FILE_PATH;
+    }
+
+    @Bean(name = "tempOutputFilePath")
+    public Path tempOutputFilePath() {
+        return TEMP_OUTPUT_FILE_PATH;
     }
 
     @Bean
@@ -65,4 +78,9 @@ public class DockerConfig {
     public RunDockerContainerService runDockerContainerService(DockerClient dockerClient) {
         return new RunDockerContainerServiceImpl(dockerClient, DOCKERFILE_PATH);
     }
+//
+//    @Bean
+//    public TestCaseService testCaseService() {
+//        return new TestCaseServiceImpl(TEMP_INPUT_FILE_PATH, TEMP_OUTPUT_FILE_PATH);
+//    }
 }

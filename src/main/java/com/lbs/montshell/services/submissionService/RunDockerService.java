@@ -14,6 +14,7 @@ public class RunDockerService {
     CreateTempCodeFileService createTempCodeFileService;
     BuildDockerfileService buildDockerfileService;
     RunDockerContainerService runDockerContainerService;
+    TestCaseService testCaseService;
 
     private final Executor taskExecutor;
 
@@ -22,12 +23,14 @@ public class RunDockerService {
             CreateTempCodeFileService createTempCodeFileService,
             BuildDockerfileService buildDockerfileService,
             RunDockerContainerService runDockerContainerService,
+            TestCaseService testCaseService,
             @Qualifier("taskExecutor") Executor taskExecutor) {
 
         this.createDockerfileService = createDockerfileService;
         this.createTempCodeFileService = createTempCodeFileService;
         this.buildDockerfileService = buildDockerfileService;
         this.runDockerContainerService = runDockerContainerService;
+        this.testCaseService = testCaseService;
         this.taskExecutor = taskExecutor;
     }
 
@@ -41,8 +44,14 @@ public class RunDockerService {
         // create temp code file
         String codeFileName = createTempCodeFileService.createTempCodeFile(submitForm);
 
+        // create input file
+        String inputFileName = testCaseService.createInputFile(submitForm.getProblem_id());
+
+        // create output file
+        String outputFileName = testCaseService.createOutputFile(submitForm.getProblem_id());
+
         // create dockerfile
-        Path dockerfilePath = createDockerfileService.createDockerfile(submitForm, codeFileName);
+        Path dockerfilePath = createDockerfileService.createDockerfile(submitForm, codeFileName, inputFileName, outputFileName);
 
         // build docker image
         String imageId = buildDockerfileService.buildDockerfile(dockerfilePath, dockerImageName);

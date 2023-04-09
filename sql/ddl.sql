@@ -7,7 +7,7 @@ create table if not exists `user` (
   primary key (`id`)
 );
 
-insert into user (username, password) values ('tset',  '1234')
+insert into user (username, password) values ('test',  '1234')
 
 // mysql
 
@@ -31,3 +31,12 @@ CREATE TABLE `montshell`.`problem` (
    PRIMARY KEY (`id`));
 
 insert into problem (title, author, description, input_description, output_description, difficulty) values ('test_title', 'test_author','test_description', 'test_input_description', 'test_output_description', 1);
+
+
+CREATE TABLE `montshell`.`test_case` (
+    `id` INT NOT NULL,
+    `test_input` TEXT NOT NULL,
+    `test_output` TEXT NOT NULL,
+    PRIMARY KEY (`id`));
+
+insert into test_case (id, test_input, test_output) values (1, '1 2', '3');

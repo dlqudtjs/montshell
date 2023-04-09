@@ -28,7 +28,7 @@ public class ProblemServiceImpl implements ProblemService{
     }
 
     @Override
-    public Optional<Problem> findById(Long id) {
+    public Optional<Problem> getProblem(Long id) {
         return problemRepository.findById(id);
     }
 }

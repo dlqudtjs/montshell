@@ -12,5 +12,5 @@ public interface ProblemService {
 
     Page<Problem> problemList(Pageable pageable);
 
-    Optional<Problem> findById(Long id);
+    Optional<Problem> getProblem(Long id);
 }

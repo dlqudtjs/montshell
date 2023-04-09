@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>코드 제출</title>
+</head>
+<body>
+<h1 th:text="${problem.title}"></h1>
+<form method="post" action="/submitProc">
+    <input type="hidden" name="problem_id" th:value="${problem.id}">
+    <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
+    <span>난이도 : </span><span th:text="${problem.difficulty}"></span><br>
+    <span>출제자 : </span><span th:text="${#authentication.getName()}"></span><br>
+    <span>설명 : </span><span th:text="${problem.description}"></span><br>
+    <span>입력 설명 : </span><span th:text="${problem.input_description}"></span><br>
+    <span>출력 설명 : </span><span th:text="${problem.output_description}"></span><br>
+    <span>생성 시간 : </span><span th:text="${problem.created_at}"></span><br>
+    <span>수정 시간 : </span><span th:text="${problem.updated_at}"></span><br>
+
+    <label for="language">코드 언어:</label>
+    <select id="language" name="language">
+        <option value="java">Java</option>
+        <option value="python">Python</option>
+        <option value="c++">C++</option>
+    </select><br><br>
+    <label for="code">코드:</label><br>
+    <textarea id="code" name="code" rows="10" cols="50"></textarea><br><br>
+    <input type="submit" value="제출">
+</form>
+</body>
+</html>
