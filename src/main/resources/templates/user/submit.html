@@ -7,16 +7,6 @@
 <body>
 <h1 th:text="${problem.title}"></h1>
 <form method="post" action="/submitProc">
-    <input type="hidden" name="problem_id" th:value="${problem.id}">
-    <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
-    <span>난이도 : </span><span th:text="${problem.difficulty}"></span><br>
-    <span>출제자 : </span><span th:text="${#authentication.getName()}"></span><br>
-    <span>설명 : </span><span th:text="${problem.description}"></span><br>
-    <span>입력 설명 : </span><span th:text="${problem.input_description}"></span><br>
-    <span>출력 설명 : </span><span th:text="${problem.output_description}"></span><br>
-    <span>생성 시간 : </span><span th:text="${problem.created_at}"></span><br>
-    <span>수정 시간 : </span><span th:text="${problem.updated_at}"></span><br>
-
     <label for="language">코드 언어:</label>
     <select id="language" name="language">
         <option value="java">Java</option>
@@ -24,8 +14,48 @@
         <option value="c++">C++</option>
     </select><br><br>
     <label for="code">코드:</label><br>
+    <input type="hidden" name="problem_id" th:value="${problem.id}">
+    <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
     <textarea id="code" name="code" rows="10" cols="50"></textarea><br><br>
     <input type="submit" value="제출">
+
+    <script>
+        const language = document.getElementById("language");
+        const codeTextArea = document.getElementById("code");
+
+        // 선택과 로드 시 초기 값을 설정하는 함수
+        const setInitialCode = () => {
+            if (language.value === "java") {
+                codeTextArea.value = "public class Main {\n" +
+                    "    public static void main(String[] args) {\n" +
+                    "        // write your code here\n" +
+                    "    }\n" +
+                    "}";
+            } else if (language.value === "python") {
+                codeTextArea.value = "def main():\n" +
+                    "    # write your code here\n" +
+                    "\n" +
+                    "if __name__ == \"__main__\":\n" +
+                    "    main()";
+            } else if (language.value === "c++") {
+                codeTextArea.value = "#include <iostream>\n" +
+                    "\n" +
+                    "using namespace std;\n" +
+                    "\n" +
+                    "int main() {\n" +
+                    "    // write your code here\n" +
+                    "    return 0;\n" +
+                    "}";
+            }
+        }
+
+        // 페이지가 로드될 때 초기 값을 설정
+        document.addEventListener("DOMContentLoaded", setInitialCode);
+
+        // 드롭박스 선택 시 초기 값을 업데이트
+        language.addEventListener("change", setInitialCode);
+
+    </script>
 </form>
 </body>
 </html>

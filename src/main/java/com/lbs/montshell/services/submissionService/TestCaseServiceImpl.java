@@ -1,7 +1,6 @@
 package com.lbs.montshell.services.submissionService;
 
 import com.lbs.montshell.repositories.JpaTestCaseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

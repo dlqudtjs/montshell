@@ -72,7 +72,7 @@
         <tbody>
         <tr th:each="problem : ${problemList}">
             <td style="width:10%" th:text="${problem.id}"></td>
-            <td style="width:70%"><a th:text="${problem.title}" th:href="@{/user/submit(problemId=${problem.id})}"></a></td>
+            <td style="width:70%"><a th:text="${problem.title}" th:href="@{./problemView(problemId=${problem.id})}"></a></td>
             <td style="width:10%"th:text="${problem.difficulty}"></td>
             <td style="width:10%"th:text="${problem.author}"></td>
         </tr>

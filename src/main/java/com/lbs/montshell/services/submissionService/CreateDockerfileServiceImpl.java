@@ -59,7 +59,7 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
                         "RUN javac " + codeFileName + "\n" +
                         "COPY " + scriptFileName + " /app\n" +
                         "RUN chmod +x " + scriptFileName + "\n" +
-                        "CMD ['/app/" + scriptFileName + "']\n";
+                        "ENTRYPOINT [\"/app/" + scriptFileName + "\"]\n";
             case "cpp":
                 return "FROM gcc:latest\n" +
                         "RUN mkdir /app\n" +
@@ -68,7 +68,7 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
                         "RUN g++ -o " + codeFileName.replace(".cpp", " ") + " " + codeFileName + "\n" +
                         "COPY " + scriptFileName + " /app\n" +
                         "RUN chmod +x " + scriptFileName + "\n" +
-                        "CMD ['/app/" + scriptFileName + "']\n";
+                        "ENTRYPOINT [\"/app/" + scriptFileName + "\"]\n";
             case "python":
                 return "FROM python:3\n" +
                         "RUN mkdir /app\n" +
@@ -85,18 +85,49 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
     public String getScriptFileContent(SubmitForm submitForm, String codeFileName, String inputFileName, String outputFileName) {
         String user_output = submitForm.getUser_id() + "_output.txt";
 
-        return "#!/bin/bash\n" +
-                "./" + codeFileName + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
-                "echo \"----user output----\" \n" +
-                "cat " + user_output + "\n" +
-                "echo \"----correct output----\" \n" +
-                "cat " + outputFileName + "\n" +
-                "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
-                "if [ $? -eq 0 ]; then\n" +
-                "    echo \"\nCorrect\"\n" +
-                "else\n" +
-                "    echo \"\nWrong\"\n" +
-                "fi\n";
+        switch (submitForm.getLanguage().toLowerCase()) {
+            case "java":
+                return "#!/bin/bash\n" +
+                        "java " + codeFileName.replace(".java", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
+                        "echo \"----user output----\" \n" +
+                        "cat " + user_output + "\n" +
+                        "echo \"----correct output----\" \n" +
+                        "cat " + outputFileName + "\n" +
+                        "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
+                        "if [ $? -eq 0 ]; then\n" +
+                        "    echo \"\nCorrect\"\n" +
+                        "else\n" +
+                        "    echo \"\nWrong\"\n" +
+                        "fi\n";
+            case "cpp":
+                return "#!/bin/bash\n" +
+                        "./" + codeFileName.replace(".cpp", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
+                        "echo \"----user output----\" \n" +
+                        "cat " + user_output + "\n" +
+                        "echo \"----correct output----\" \n" +
+                        "cat " + outputFileName + "\n" +
+                        "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
+                        "if [ $? -eq 0 ]; then\n" +
+                        "    echo \"\nCorrect\"\n" +
+                        "else\n" +
+                        "    echo \"\nWrong\"\n" +
+                        "fi\n";
+            case "python":
+                return "#!/bin/bash\n" +
+                        "python3 " + codeFileName + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
+                        "echo \"----user output----\" \n" +
+                        "cat " + user_output + "\n" +
+                        "echo \"----correct output----\" \n" +
+                        "cat " + outputFileName + "\n" +
+                        "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
+                        "if [ $? -eq 0 ]; then\n" +
+                        "    echo \"\nCorrect\"\n" +
+                        "else\n" +
+                        "    echo \"\nWrong\"\n" +
+                        "fi\n";
+            default:
+                throw new IllegalArgumentException("Unsupported language: " + submitForm.getLanguage());
+        }
     }
 
     public String createScriptFileName(SubmitForm submitForm) {

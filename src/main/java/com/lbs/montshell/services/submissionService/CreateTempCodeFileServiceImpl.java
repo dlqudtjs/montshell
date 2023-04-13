@@ -28,8 +28,13 @@ public class CreateTempCodeFileServiceImpl implements CreateTempCodeFileService 
         Path codeFilePath = TEMP_CODE_FILE_PATH.resolve(codeFileName);
 
         // codeFilePath 에 submitForm.getCode() 를 저장한다.
-        String shebang = "#!/usr/bin/env python3\n" + submitForm.getCode();
-        Files.write(codeFilePath, shebang.getBytes());
+        String shebang = getShebang(submitForm.getLanguage());
+
+        // java 의 경우 class Main 의 이름을 codeFileName 으로 바꾸어야 한다.
+        submitForm.setCode(modifyMainClassName(submitForm.getLanguage(), codeFileName, submitForm.getCode()));
+
+        // shebang 와 수정한 코드를 이어 붙이고 file 을 생성한다.
+        Files.write(codeFilePath, (shebang + submitForm.getCode()).getBytes());
 
         // codeFileName 을 리턴한다.
         return codeFileName;
@@ -50,6 +55,26 @@ public class CreateTempCodeFileServiceImpl implements CreateTempCodeFileService 
                 return tempFileName + "Main.cpp";
             default:
                 throw new IllegalArgumentException("Unsupported language: " + language);
+        }
+    }
+
+    public String getShebang(String language) {
+        switch (language.toLowerCase()) {
+            case "python":
+                return "#!/usr/bin/env python3";
+            default:
+                return "";
+        }
+    }
+
+    public String modifyMainClassName(String language, String codeFileName, String code) {
+        // 일단 java 만 처리한다.
+        switch (language.toLowerCase()) {
+            case "java":
+                return code.replace("class Main", "class " + codeFileName.replace(".java", ""));
+            default:
+                return code;
+
         }
     }
 }
