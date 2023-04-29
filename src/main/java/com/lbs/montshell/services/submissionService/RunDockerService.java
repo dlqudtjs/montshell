@@ -4,19 +4,23 @@ import com.lbs.montshell.controllers.SubmitForm;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 @Service
 public class RunDockerService {
+    private final Path RESULT_FILE_PATH;
     CreateDockerfileService createDockerfileService;
     CreateTempCodeFileService createTempCodeFileService;
     BuildDockerfileService buildDockerfileService;
     RunDockerContainerService runDockerContainerService;
     TestCaseService testCaseService;
+    SaveResultService saveResultService;
 
     private final Executor taskExecutor;
 
@@ -26,7 +30,9 @@ public class RunDockerService {
             BuildDockerfileService buildDockerfileService,
             RunDockerContainerService runDockerContainerService,
             TestCaseService testCaseService,
-            @Qualifier("taskExecutor") Executor taskExecutor) {
+            SaveResultService saveResultService,
+            @Qualifier("taskExecutor") Executor taskExecutor,
+            @Qualifier("resultFilePath") Path RESULT_FILE_PATH) {
 
         this.createDockerfileService = createDockerfileService;
         this.createTempCodeFileService = createTempCodeFileService;
@@ -34,6 +40,8 @@ public class RunDockerService {
         this.runDockerContainerService = runDockerContainerService;
         this.testCaseService = testCaseService;
         this.taskExecutor = taskExecutor;
+        this.saveResultService = saveResultService;
+        this.RESULT_FILE_PATH = RESULT_FILE_PATH;
     }
 
     public void exeDocker(SubmitForm submitForm) throws IOException {
@@ -60,6 +68,53 @@ public class RunDockerService {
 
         // run docker image
         runDockerContainerService.runDockerContainer(imageId, dockerImageName, submitForm, codeFileName);
+
+        //결과 파일 대기
+        CompletableFuture<File> resultFileFuture = waitForResultFileAsync(RESULT_FILE_PATH, submitForm);
+
+        // save result
+        resultFileFuture.thenAcceptAsync(resultFile -> {
+            try {
+                saveResultService.saveResult(submitForm, Path.of(RESULT_FILE_PATH + "\\" + getResultFileName(submitForm)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public CompletableFuture<File> waitForResultFileAsync(Path resultFilePath, SubmitForm submitForm) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return waitForResultFile(resultFilePath, 60, submitForm);
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
+    }
+
+    public File waitForResultFile(Path resultFilePath, int maxWaitSeconds, SubmitForm submitForm) throws IOException, InterruptedException {
+        String resultFileName = resultFilePath + "\\" + getResultFileName(submitForm).toString();
+        System.out.println("resultFileName = " + resultFileName);
+        File resultFile = new File(resultFileName);
+        int waitTime = 0;
+
+        // 파일이 존재할 때까지 대기하거나 최대 대기 시간이 초과될 때까지 대기
+        while (!resultFile.exists() && waitTime < maxWaitSeconds * 1000) {
+            Thread.sleep(1000); // 1초 간격으로 확인
+            waitTime += 1000;
+        }
+
+        if (waitTime >= maxWaitSeconds * 1000) {
+            System.out.println("Max wait time exceeded");
+            return null; // 최대 대기 시간이 초과된 경우 null 반환
+        }
+
+        System.out.println("Result file found");
+        return resultFile;
+    }
+    public Path getResultFileName(SubmitForm submitForm) {
+        return Path.of(submitForm.getUser_id() + "_"  + submitForm.getProblem_id()  + "_result.txt");
     }
 
     public void runDockerInParallel(SubmitForm submitForm) {

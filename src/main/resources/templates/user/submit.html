@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>코드 제출</title>
+    <div th:insert="common-css :: head"></div>
 </head>
 <body>
+<header>
+    <div th:insert="navBar :: nav"></div>
+</header>
 <h1 th:text="${problem.title}"></h1>
 <form method="post" action="/submitProc">
     <label for="language">코드 언어:</label>
@@ -28,7 +32,7 @@
             if (language.value === "java") {
                 codeTextArea.value = "public class Main {\n" +
                     "    public static void main(String[] args) {\n" +
-                    "        // write your code here\n" +
+                    "        System.out.println(1+2);\n" +
                     "    }\n" +
                     "}";
             } else if (language.value === "python") {

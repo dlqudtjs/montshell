@@ -53,6 +53,9 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
         switch (language.toLowerCase()) {
             case "java":
                 return "FROM openjdk:11-jdk\n" +
+                        "RUN apt-get update && apt-get install -y curl\n" +
+                        "RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils && apt-get install -y time\n" +
+                        "RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends bc\n" +
                         "RUN mkdir /app\n" +
                         "WORKDIR /app\n" +
                         "COPY . /app\n" +
@@ -88,17 +91,32 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
         switch (submitForm.getLanguage().toLowerCase()) {
             case "java":
                 return "#!/bin/bash\n" +
-                        "java " + codeFileName.replace(".java", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
-                        "echo \"----user output----\" \n" +
-                        "cat " + user_output + "\n" +
-                        "echo \"----correct output----\" \n" +
-                        "cat " + outputFileName + "\n" +
+                        // 실행 시간 측정 시간
+                        "time_start=$(date +%s.%N)\n" +
+
+                        // 실행할 파일명 및 파일 입력, 실행 시간 및 메모리 사용량 저장
+                        "/usr/bin/time -f \"Memory usage: %M KB\\nExecution time: %E\" -o " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt java " +
+                        codeFileName.replace(".java", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
+
+                        // 실행 시간 측정 시간
+                        "time_end=$(date +%s.%N)\n" +
+                        "elapsed_time=$(echo \"($time_end - $time_start) * 1000\" | bc | awk '{printf \"%d\", $1}')\n" +
+
+                        // 파일 비교
                         "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
                         "if [ $? -eq 0 ]; then\n" +
-                        "    echo \"\nCorrect\"\n" +
+                        "    echo \"Correct\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
                         "else\n" +
-                        "    echo \"\nWrong\"\n" +
-                        "fi\n";
+                        "    echo \"Wrong\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
+                        "fi\n" +
+
+                        // 결과 출력
+                        "echo \"Execution time: ${elapsed_time}ms\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
+                        "cat " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
+
+                        // 파일 전송
+                        "curl -X POST -H \"Content-Type: multipart/form-data\" -F 'file=@"+ submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt' http://host.docker.internal:8080/fileUpload\n";
+
             case "cpp":
                 return "#!/bin/bash\n" +
                         "./" + codeFileName.replace(".cpp", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
@@ -112,13 +130,10 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
                         "else\n" +
                         "    echo \"\nWrong\"\n" +
                         "fi\n";
+
             case "python":
                 return "#!/bin/bash\n" +
                         "python3 " + codeFileName + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
-                        "echo \"----user output----\" \n" +
-                        "cat " + user_output + "\n" +
-                        "echo \"----correct output----\" \n" +
-                        "cat " + outputFileName + "\n" +
                         "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
                         "if [ $? -eq 0 ]; then\n" +
                         "    echo \"\nCorrect\"\n" +

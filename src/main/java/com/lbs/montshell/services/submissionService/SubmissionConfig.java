@@ -18,6 +18,7 @@ public class SubmissionConfig {
     private final Path TEMP_CODE_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
     private final Path TEMP_INPUT_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
     private final Path TEMP_OUTPUT_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
+    private final Path RESULT_FILE_PATH = Path.of("C:/Users/dlqud/OneDrive/바탕 화면/학교 공유 파일/3-1/Start-Up Project/montshell/temp/");
 
     @Bean(name = "dockerfilePath")
     public Path dockerfilePath() {
@@ -37,6 +38,11 @@ public class SubmissionConfig {
     @Bean(name = "tempOutputFilePath")
     public Path tempOutputFilePath() {
         return TEMP_OUTPUT_FILE_PATH;
+    }
+
+    @Bean(name = "resultFilePath")
+    public Path resultFilePath() {
+        return RESULT_FILE_PATH;
     }
 
     @Bean

@@ -1,5 +1,6 @@
 package com.lbs.montshell.models;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 

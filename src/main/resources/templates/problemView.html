@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${problem.title}"></title>
+    <div th:insert="common-css :: head"></div>
 </head>
 <body>
+<header>
+    <div th:insert="navBar :: nav"></div>
+</header>
     <input type="hidden" name="problem_id" th:value="${problem.id}">
     <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
     <span>난이도 : </span><span th:text="${problem.difficulty}"></span><br>
@@ -15,5 +19,6 @@
     <span>생성 시간 : </span><span th:text="${problem.created_at}"></span><br>
     <span>수정 시간 : </span><span th:text="${problem.updated_at}"></span><br>
     <a th:href="@{./user/submit(problemId=${problem.id})}">제출</a>
+
 </body>
 </html>
