@@ -33,10 +33,7 @@ public class Problem {
     private String output_description;
 
     private int difficulty;
-    
-    // 테스트 케이스 (여러개의 입력과 출력 쌍)
-//    private List<TestCase> test_case;
-    
+
     // 문제 생성 날짜
     private String created_at;
     
