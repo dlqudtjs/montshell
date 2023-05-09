@@ -95,7 +95,6 @@ public class RunDockerService {
 
     public File waitForResultFile(Path resultFilePath, int maxWaitSeconds, SubmitForm submitForm) throws IOException, InterruptedException {
         String resultFileName = resultFilePath + "\\" + getResultFileName(submitForm).toString();
-        System.out.println("resultFileName = " + resultFileName);
         File resultFile = new File(resultFileName);
         int waitTime = 0;
 

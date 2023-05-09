@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>문제</title>
+  <div th:insert="common-css :: head"></div>
+  <style>
+    .layout {
+      margin: 10% 10% 0% 10%;
+    }
+
+    .layout a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 10px;
+    }
+    th {
+      background-color: #000;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #eee;
+    }
+    tr:nth-child(odd) {
+      background-color: #fff;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .pagination ul {
+      color: #7c8082;
+      text-decoration: none;
+    }
+
+    .pagination li {
+      display: inline-block;
+      padding: 0 10px;
+    }
+
+    .pagination a {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div th:insert="navBar :: nav"></div>
+</header>
+<main>
+  <div th:if="${message}">
+    <script>
+      alert("[[${message}]]");
+      location.href = "/";
+    </script>
+  </div>
+  <div class="layout">
+    <table>
+      <thead>
+      <tr>
+        <th>제출 번호</th>
+        <th>문제 번호</th>
+        <th>제출자</th>
+        <th>사용 언어</th>
+        <th>정답유무</th>
+        <th>제출시간</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="submitInfo : ${submitInfoList}">
+        <td style="width:10%" th:text="${submitInfo.getId()}"></td>
+        <td style="width:70%"><a th:text="${submitInfo.getProblemId()}" th:href="@{../problemView(problemId=${submitInfo.getProblemId()})}"></a></td>
+        <td style="width:10%"th:text="${submitInfo.getUserId()}"></td>
+        <td style="width:10%"th:text="${submitInfo.getLanguage()}"></td>
+        <td style="width:10%"th:text="${submitInfo.getCorrect()}"></td>
+        <td style="width:10%"th:text="${submitInfo.getSubmit_time()}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <ul>
+      <li>
+        <a th:href="@{/user/resultList(page=${previous})}">이전</a>
+      </li>
+      <li th:each="page : ${#numbers.sequence(1, totalPage)}">
+        <a th:href="@{/user/resultList(page=${page - 1})}" th:text="${page}"></a>
+      </li>
+      <li>
+        <a th:href="@{/user/resultList(page=${next})}">다음</a>
+      </li>
+    </ul>
+  </div>
+</main>
+</body>
+</html>
