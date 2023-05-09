@@ -3,7 +3,6 @@ package com.lbs.montshell.services.submissionService;
 import com.lbs.montshell.controllers.SubmitForm;
 import com.lbs.montshell.models.SubmitInfo;
 import com.lbs.montshell.repositories.JpaSubmitInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

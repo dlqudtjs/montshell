@@ -21,10 +21,13 @@ public class ProblemListController {
     @GetMapping("/problemList")
     public String problemList(Model model, @PageableDefault(sort = "id") Pageable pageable) {
         Page<Problem> problemList = ProblemService.problemList(pageable);
+        int currentPage = problemList.getNumber(); // 현재 페이지 번호
+        int totalPages = problemList.getTotalPages(); // 전체 페이지 수
+
         model.addAttribute("problemList", problemList);
         model.addAttribute("totalPage", problemList.getTotalPages());
         model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
-        model.addAttribute("next", pageable.next().getPageNumber());
+        model.addAttribute("next", (currentPage < totalPages - 1) ? currentPage + 1 : totalPages - 1);
 
         return "problemList";
     }

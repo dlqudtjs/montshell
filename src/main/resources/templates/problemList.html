@@ -37,6 +37,10 @@
         .pagination {
             display: flex;
             justify-content: center;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .pagination ul {
@@ -59,6 +63,7 @@
 <header>
     <div th:insert="navBar :: nav"></div>
 </header>
+<main>
 <div class="layout">
     <table>
         <thead>
@@ -92,5 +97,6 @@
         </li>
     </ul>
 </div>
+</main>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
         String userDockerfile = createDockerFileName(submitForm);
 
         // 도커 파일 내용 생성
-        String dockerfileContent = getDockerfileContent(submitForm.getLanguage(), codeFileName, scriptFileName);
+        String dockerfileContent = getDockerfileContent(submitForm.getLanguage(), codeFileName, scriptFileName, submitForm);
 
         // dDOCKERFILE_PATH 에 userDockerfile 이름을 붙인다.
         Path dockerFile = DOCKERFILE_PATH.resolve(userDockerfile);
@@ -49,7 +49,7 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
         return  submitForm.getLanguage().toLowerCase() + "_" + submitForm.getProblem_id() + "_" + submitForm.getUser_id() + "_" + "dockerfile";
     }
 
-    public String getDockerfileContent(String language, String codeFileName, String scriptFileName) {
+    public String getDockerfileContent(String language, String codeFileName, String scriptFileName, SubmitForm submitForm) {
         switch (language.toLowerCase()) {
             case "java":
                 return "FROM openjdk:11-jdk\n" +
@@ -59,7 +59,7 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
                         "RUN mkdir /app\n" +
                         "WORKDIR /app\n" +
                         "COPY . /app\n" +
-                        "RUN javac " + codeFileName + "\n" +
+                        "RUN javac " + codeFileName + " 2> " + language + "_" + submitForm.getProblem_id() + "_" + submitForm.getUser_id() + "_compile_errors.log\n" +
                         "COPY " + scriptFileName + " /app\n" +
                         "RUN chmod +x " + scriptFileName + "\n" +
                         "ENTRYPOINT [\"/app/" + scriptFileName + "\"]\n";

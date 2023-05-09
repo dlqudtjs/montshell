@@ -2,6 +2,7 @@ package com.lbs.montshell.services.submissionService;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.WaitContainerResultCallback;
 import com.github.dockerjava.api.model.Bind;
 import com.lbs.montshell.controllers.SubmitForm;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,6 +42,12 @@ public class RunDockerContainerServiceImpl implements RunDockerContainerService 
 
             // 컨테이너 시작
             dockerClient.startContainerCmd(container.getId()).exec();
+
+            // 컨테이너가 완료될 때까지 대기
+            dockerClient.waitContainerCmd(container.getId()).exec(new WaitContainerResultCallback()).awaitCompletion();
+
+            // 컨테이너 삭제
+            dockerClient.removeContainerCmd(container.getId()).withForce(true).exec();
 
             System.out.println("Docker container started. Container ID: " + container.getId());
         } catch (Exception e) {
