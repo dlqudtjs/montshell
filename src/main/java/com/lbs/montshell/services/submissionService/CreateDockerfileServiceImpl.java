@@ -102,12 +102,16 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
                         "time_end=$(date +%s.%N)\n" +
                         "elapsed_time=$(echo \"($time_end - $time_start) * 1000\" | bc | awk '{printf \"%d\", $1}')\n" +
 
+                        // 마지막 개행문자 신경 x
+                        "sed -i -e :a -e '/^\\n*$/{$d;N;ba' -e '}' " + user_output + "\n" +
+                        "sed -i -e :a -e '/^\\n*$/{$d;N;ba' -e '}' " + outputFileName + "\n" +
+
                         // 파일 비교
                         "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
                         "if [ $? -eq 0 ]; then\n" +
-                        "    echo \"Correct\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
+                        "    echo Correct: \"Correct\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
                         "else\n" +
-                        "    echo \"Wrong\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
+                        "    echo Correct: \"Wrong\" >> " + submitForm.getUser_id() + "_" + submitForm.getProblem_id() + "_result.txt\n" +
                         "fi\n" +
 
                         // 결과 출력
@@ -120,9 +124,9 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
             case "cpp":
                 return "#!/bin/bash\n" +
                         "./" + codeFileName.replace(".cpp", " ") + " < " + inputFileName + " > " + user_output + " 2>&1\n" +
-                        "echo \"----user output----\" \n" +
+                        "echo Correct: \"----user output----\" \n" +
                         "cat " + user_output + "\n" +
-                        "echo \"----correct output----\" \n" +
+                        "echo Correct: \"----correct output----\" \n" +
                         "cat " + outputFileName + "\n" +
                         "diff -q -w " + user_output + " " + outputFileName + " > /dev/null\n" +
                         "if [ $? -eq 0 ]; then\n" +

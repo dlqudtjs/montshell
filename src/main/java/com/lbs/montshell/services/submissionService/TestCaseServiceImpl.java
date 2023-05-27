@@ -33,7 +33,7 @@ public class TestCaseServiceImpl implements TestCaseService {
             Path inputFilePath = TEMP_INPUT_FILE_PATH.resolve(getInputFileName);
 
             // inputFilePath 에 input 을 저장한다.
-            Files.write(inputFilePath, input.getBytes());
+            Files.write(inputFilePath, input.replace("\\n", System.lineSeparator()).getBytes());
 
             return getInputFileName;
         } catch (IOException e) {
@@ -56,7 +56,7 @@ public class TestCaseServiceImpl implements TestCaseService {
             Path outputFilePath = TEMP_OUTPUT_FILE_PATH.resolve(getOutputFileName);
 
             // outputFilePath 에 output 을 저장한다.
-            Files.write(outputFilePath, output.getBytes());
+            Files.write(outputFilePath, output.replace("\\n", System.lineSeparator()).getBytes());
 
             return getOutputFileName;
 

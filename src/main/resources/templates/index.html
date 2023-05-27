@@ -7,12 +7,52 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>코딩 웹사이트</title>
     <div th:insert="common-css :: head"></div>
+    <style>
+        html {
+            height: auto;
+            width: 100%;
+        }
+        body {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .container {
+            padding-top: 40px;
+            padding-bottom: 60px;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            width: 750px;
+        }
+        .space-lg-hor {
+            margin-left: 60px;
+            margin-right: 60px;
+            text-align: center;
+        }
+        .title-v2 {
+            color: #585f69;
+            font-size: 24px;
+            margin-top: 5px;
+            text-shadow: none;
+            font-weight: normal;
+        }
+        p {
+            color: #555;
+        }
+    </style>
 </head>
 <header>
     <div th:insert="navBar :: nav"></div>
 </header>
 <main>
-
+    <div class="container">
+        <div class="text-center margin-bottom-50">
+            <h2 style="text-align: center" class="title-v2 title-center">Online Judge</h2>
+            <hr style="width: 70px; margin-top: 8px">
+            <p class="space-lg-hor">프로그래밍 문제를 풀고 온라인으로 채점받을 수 있는 곳입니다.</p>
+        </div>
+    </div>
 </main>
 <body>
 </body>
