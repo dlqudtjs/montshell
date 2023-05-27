@@ -84,9 +84,4 @@ public class SubmissionConfig {
     public RunDockerContainerService runDockerContainerService(DockerClient dockerClient) {
         return new RunDockerContainerServiceImpl(dockerClient, DOCKERFILE_PATH);
     }
-//
-//    @Bean
-//    public TestCaseService testCaseService() {
-//        return new TestCaseServiceImpl(TEMP_INPUT_FILE_PATH, TEMP_OUTPUT_FILE_PATH);
-//    }
 }

@@ -12,16 +12,15 @@
 </header>
 <h1 th:text="${problem.title}"></h1>
 <form method="post" action="/submitProc" onsubmit="hiddenTextArea.value = editor.getValue();">
+    <input type="hidden" name="problem_id" th:value="${problem.id}">
+    <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
     <label for="language">코드 언어:</label>
     <select id="language" name="language">
         <option value="java">Java</option>
         <option value="python">Python</option>
         <option value="c++">C++</option>
     </select><br><br>
-    <label for="code">코드:</label><br>
-    <input type="hidden" name="problem_id" th:value="${problem.id}">
-    <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
-    <div id="editor" style="height:200px;"></div>
+    <div id="editor" style="height:500px;"></div>
     <textarea id="code" name="code" style="display:none;"></textarea><br><br>
     <input type="submit" value="제출">
 
@@ -52,7 +51,7 @@
                 // 에디터에서 사용할 프로그래밍 언어를 설정한다.
                 language: 'java',
                 // 에디터의 테마를 설정한다.
-                theme: 'vs-dark',
+                theme: 'vs-white',
                 // 이 옵션을 true로 설정하면 에디터가 항상 부모 요소를 꽉 채운다.
                 automaticLayout: true
             });
@@ -65,7 +64,7 @@
             if (language.value === "java") {
                 code = "public class Main {\n" +
                     "    public static void main(String[] args) {\n" +
-                    "        write your code here\n" +
+                    "       // write your code here\n" +
                     "    }\n" +
                     "}";
             } else if (language.value === "python") {

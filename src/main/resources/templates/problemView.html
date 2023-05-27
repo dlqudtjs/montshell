@@ -4,6 +4,63 @@
     <meta charset="UTF-8">
     <title th:text="${problem.title}"></title>
     <div th:insert="common-css :: head"></div>
+    <style>
+        main {
+            margin-left: 12%;
+            margin-right: 12%;
+        }
+        .headline {
+            display: block;
+            margin: 10px 0 25px 0;
+            border-bottom: 3px dotted #e4e9f0;
+        }
+        .headline h2 {
+            margin: 0 0 -2px 0;
+            padding-bottom: 5px;
+            display: inline-block;
+            border-bottom: 3px solid #0076C0;
+        }
+        h1 {
+            color: #585f69;
+            font-weight: normal;
+            font-size: 28px;
+            line-height: 35px;
+            margin-bottom: 0px;
+        }
+        h2 {
+            color: #585f69;
+            text-shadow: none;
+            font-weight: normal;
+        }
+        p {
+            font-size: medium;
+            line-height: 30px;
+        }
+        .input-section {
+            width: 48%;
+            float: left;
+        }
+        .output-section {
+            width: 48%;
+            float: right;
+        }
+        .sampledata {
+            white-space: pre;
+            work-break: normal;
+            work-wrap: normal;
+            font-size: 18px;
+            font-family: Menlo, Monaco, 'Source Code Pro', consolas, monospace;
+            padding: 8px;
+            background-color: #f7f7f9;
+            border: 1px solid #e1e1e8;
+            overflow-x: scroll;
+        }
+        .row {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -12,14 +69,53 @@
 <main>
     <input type="hidden" name="problem_id" th:value="${problem.id}">
     <input type="hidden" name="user_id" th:value="${#authentication.getName()}">
-    <span>난이도 : </span><span th:text="${problem.difficulty}"></span><br>
-    <span>출제자 : </span><span th:text="${problem.author}"></span><br>
-    <span>설명 : </span><span th:text="${problem.description}"></span><br>
-    <span>입력 설명 : </span><span th:text="${problem.input_description}"></span><br>
-    <span>출력 설명 : </span><span th:text="${problem.output_description}"></span><br>
-    <span>생성 시간 : </span><span th:text="${problem.created_at}"></span><br>
-    <span>수정 시간 : </span><span th:text="${problem.updated_at}"></span><br>
-    <a th:href="@{./user/submit(problemId=${problem.id})}">제출</a>
+
+    <div style="display: flex; justify-content: space-between">
+        <h1 th:text="${problem.title}"></h1><br>
+        <a style="margin-right: -40%; margin-top: 30px; text-decoration: none; color: white; font-size: 15px" th:href="@{./user/submit(problemId=${problem.id})}">제출</a><br><br>
+    </div>
+    <br>
+    <div class="headline">
+        <h2>문제 </h2>
+    </div>
+    <p th:utext="${problem.description}"></p><br>
+
+    <div class="row">
+        <section class="input-section">
+            <div class="headline">
+                <h2>입력</h2>
+            </div>
+            <pre class="sampledata" id="sample-input-1" th:utext="${problem.input_description}"></pre><br>
+        </section>
+
+        <section class="output-section">
+            <div class="headline">
+                <h2>출력</h2>
+            </div>
+            <pre class="sampledata" id="sample-output-1" th:utext="${problem.output_description}"></pre><br>
+        </section>
+    </div>
+
+    <div class="headline">
+        <h2>출제자</h2>
+    </div>
+    <p th:text="${problem.author}"></p><br>
+
+    <div class="row">
+        <section class="input-section">
+            <div class="headline">
+                <h2>생성 시간</h2>
+            </div>
+            <p th:utext="${problem.created_at}"></p><br>
+        </section>
+
+        <section class="output-section">
+            <div class="headline">
+                <h2>수정 시간</h2>
+            </div>
+            <p th:utext="${problem.updated_at}"></p><br>
+        </section>
+    </div>
 </main>
 </body>
 </html>

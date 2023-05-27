@@ -20,15 +20,15 @@
       border-collapse: collapse;
     }
     th, td {
-      border: 1px solid #000;
+      border: 1px solid #d9d9d9;
       padding: 10px;
     }
     th {
-      background-color: #000;
-      color: #fff;
+      background-color: #f9f9f9;
+      color: #000;
     }
     tr:nth-child(even) {
-      background-color: #eee;
+      background-color: #f9f9f9;
     }
     tr:nth-child(odd) {
       background-color: #fff;
@@ -37,10 +37,8 @@
     .pagination {
       display: flex;
       justify-content: center;
-      position: fixed;
       bottom: 70px;
       left: 50%;
-      transform: translateX(-50%);
     }
 
     .pagination ul {
@@ -85,11 +83,11 @@
       <tbody>
       <tr th:each="submitInfo : ${submitInfoList}">
         <td style="width:10%" th:text="${submitInfo.getId()}"></td>
-        <td style="width:70%"><a th:text="${submitInfo.getProblemId()}" th:href="@{../problemView(problemId=${submitInfo.getProblemId()})}"></a></td>
+        <td style="width:30%"><a th:text="${submitInfo.getProblemId()}" th:href="@{../problemView(problemId=${submitInfo.getProblemId()})}"></a></td>
         <td style="width:10%"th:text="${submitInfo.getUserId()}"></td>
         <td style="width:10%"th:text="${submitInfo.getLanguage()}"></td>
         <td style="width:10%"th:text="${submitInfo.getCorrect()}"></td>
-        <td style="width:10%"th:text="${submitInfo.getSubmit_time()}"></td>
+        <td style="width:15%" th:text="${#dates.format(submitInfo.getSubmit_time(), 'yyyy-MM-dd HH:mm')}"></td>
       </tr>
       </tbody>
     </table>

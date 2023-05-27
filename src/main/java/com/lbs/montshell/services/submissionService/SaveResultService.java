@@ -35,10 +35,10 @@ public class SaveResultService {
             if(line.contains("Execution time:")) {
                 executionTime = line.substring(16);
             }
+            if(line.contains("Correct:")) {
+                correct = line.substring(9);
+            }
         }
-
-        // get correct
-        correct = lines.get(2);
 
         SubmitInfo submitInfo = new SubmitInfo();
         submitInfo.setUserId(submitForm.getUser_id());
