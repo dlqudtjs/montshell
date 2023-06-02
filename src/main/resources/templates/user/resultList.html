@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>문제</title>
   <div th:insert="common-css :: head"></div>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     .layout {
       margin: 10% 10% 0% 10%;
@@ -73,20 +75,27 @@
       <thead>
       <tr>
         <th>제출 번호</th>
-        <th>문제 번호</th>
-        <th>제출자</th>
+        <th>아이디</th>
+        <th>문제</th>
+        <th>결과</th>
+        <th>메모리</th>
+        <th>시간</th>
         <th>사용 언어</th>
-        <th>정답유무</th>
         <th>제출시간</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="submitInfo : ${submitInfoList}">
         <td style="width:10%" th:text="${submitInfo.getId()}"></td>
-        <td style="width:30%"><a th:text="${submitInfo.getProblemId()}" th:href="@{../problemView(problemId=${submitInfo.getProblemId()})}"></a></td>
-        <td style="width:10%"th:text="${submitInfo.getUserId()}"></td>
-        <td style="width:10%"th:text="${submitInfo.getLanguage()}"></td>
-        <td style="width:10%"th:text="${submitInfo.getCorrect()}"></td>
+        <td style="width:10%" th:text="${submitInfo.getUserId()}"></td>
+        <td style="width:10%"><a th:text="${submitInfo.getProblemId()}" th:href="@{../problemView(problemId=${submitInfo.getProblemId()})}"></a></td>
+        <td style="width:10%" th:text="${submitInfo.getCorrect()}"></td>
+        <td style="width:10%" th:text="${submitInfo.getMemory_usage()}"></td>
+        <td style="width:10%" th:text="${submitInfo.getExecution_time()}"></td>
+        <td style="width:10%">
+          <a href="#" th:text="${submitInfo.getLanguage()}" th:attr="data-code=${#strings.escapeXml(submitInfo.getUser_code())}" onclick="openModalWithCode(this.getAttribute('data-code'))"></a>
+        </td>
+
         <td style="width:15%" th:text="${#dates.format(submitInfo.getSubmit_time(), 'yyyy-MM-dd HH:mm')}"></td>
       </tr>
       </tbody>
@@ -105,6 +114,40 @@
       </li>
     </ul>
   </div>
+
+  <!-- 모달 창 -->
+  <div id="codeModal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">사용자 코드</h5>
+          <button class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <pre id="codeContent"></pre> <!-- 코드를 표시할 요소 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery 및 Bootstrap JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // 모달 창 열기 함수
+    function openModalWithCode(code) {
+      const codeContent = document.getElementById("codeContent");
+      codeContent.innerText = code; // 코드를 표시할 요소에 코드 내용 설정
+      $("#codeModal").modal("show"); // 모달 창 열기
+    }
+
+    // 모달 창 닫기 함수
+    function closeModal() {
+      $("#codeModal").modal("hide"); // 모달 창 닫기
+    }
+  </script>
+
 </main>
 </body>
 </html>
