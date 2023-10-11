@@ -53,16 +53,18 @@ public class CreateDockerfileServiceImpl implements CreateDockerfileService {
         switch (language.toLowerCase()) {
             case "java":
                 return "FROM openjdk:11-jdk\n" +
-                        "RUN apt-get update && apt-get install -y curl\n" +
-                        "RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils && apt-get install -y time\n" +
-                        "RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends bc\n" +
-                        "RUN mkdir /app\n" +
+                        "RUN apt-get update \\\n" +
+                        "    && apt-get install -y curl \\\n" +
+                        "    && apt-get install -y time \\\n" +
+                        "    && apt-get install -y --no-install-recommends apt-utils \\\n" +
+                        "    && apt-get install -y --no-install-recommends bc\n" +
                         "WORKDIR /app\n" +
                         "COPY . /app\n" +
                         "RUN javac " + codeFileName + " 2> " + language + "_" + submitForm.getProblem_id() + "_" + submitForm.getUser_id() + "_compile_errors.log\n" +
                         "COPY " + scriptFileName + " /app\n" +
                         "RUN chmod +x " + scriptFileName + "\n" +
                         "ENTRYPOINT [\"/app/" + scriptFileName + "\"]\n";
+
             case "cpp":
                 return "FROM gcc:latest\n" +
                         "RUN mkdir /app\n" +
